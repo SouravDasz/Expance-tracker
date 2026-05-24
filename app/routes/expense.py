@@ -24,10 +24,10 @@ def show_expense():
 
 
 @router.get("/expense/add_amount")
-def add_amount_page(request: Request):
+def add_amount_page(request: Request, success: int = 0):
     return templates.TemplateResponse(request=request,
         name="Add Expense Page.html",
-        
+        context={ "success": success},
     )
 
 
@@ -36,7 +36,8 @@ def add_amount(
     request: Request,
     amount: float = Form(...),
     category: str = Form(...),
-    db=Depends(get_db)
+    description: str = Form(None),
+    db=Depends(get_db),
 ):
     today = date.today()
 
@@ -57,10 +58,6 @@ def add_amount(
     db.commit()
     db.refresh(new_expense)
 
-    return {
-        "amount": new_expense.amount,
-        "category": new_expense.category,
-        "date": new_expense.date
-    }
+    return RedirectResponse(url="/expense/add_amount?success=1", status_code=303)
 
     

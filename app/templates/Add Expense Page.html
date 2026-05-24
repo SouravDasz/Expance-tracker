@@ -154,6 +154,18 @@
     </div>
   </main>
 
+  {% if success %}
+  <div id="toast" class="fixed top-6 right-6 bg-emerald-600 text-white px-4 py-3 rounded-lg shadow-lg z-50">
+    Data entered successfully
+  </div>
+  <script>
+    setTimeout(function () {
+      var t = document.getElementById('toast');
+      if (t) { t.style.transition = 'opacity 0.4s'; t.style.opacity = '0'; setTimeout(function () { t.remove(); }, 400); }
+    }, 2500);
+  </script>
+  {% endif %}
+
 </body>
 
 </html>
