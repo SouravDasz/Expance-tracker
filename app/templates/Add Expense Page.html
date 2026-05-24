@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spenda - Track Your Daily Expenses</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen selection:bg-orange-500 selection:text-white">
+
+  <!-- Navbar -->
+  <header class="border-b border-slate-200 bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <div class="bg-orange-500 p-2 rounded-lg text-white font-bold text-xl tracking-tight">S</div>
+        <span class="text-xl font-extrabold tracking-tight text-slate-900">Spenda</span>
+      </div>
+      <!-- Nav Links -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+        <a href="#" class="hover:text-orange-500 transition-colors">Dashboard</a>
+        <a href="#" class="text-orange-500 font-semibold border-b-2 border-orange-500 py-5">Add Expense</a>
+        <a href="#" class="hover:text-orange-500 transition-colors">History</a>
+        <a href="#" class="hover:text-orange-500 transition-colors">Profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Wrapper -->
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+      <!-- Left Column: Add Expense Form -->
+      <div class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <div class="mb-6">
+          <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Add New Expense</h2>
+          <p class="text-slate-500 text-sm mt-1">Keep your budget on track by logging your latest transaction.</p>
+        </div>
+
+        <form class="space-y-5" action="/expense/add_amount" method="post">
+          <!-- Amount Input -->
+          <div>
+            <label for="amount" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Amount
+              (₹)</label>
+            <div class="relative rounded-xl shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <span class="text-slate-400 sm:text-sm font-semibold">₹</span>
+              </div>
+              <input type="number" name="amount" id="amount" step="1" value="4000"
+                class="block w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all font-mono text-lg"
+                placeholder="0.00">
+            </div>
+          </div>
+
+          <!-- Category Select (Dynamic Native Select) -->
+          <div>
+            <label for="category"
+              class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Category</label>
+            <div class="relative">
+              <select id="category" name="category"
+                class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all appearance-none cursor-pointer text-sm">
+                <option value="shopping" selected>Shopping</option>
+                <option value="travel">Travel</option>
+                <option value="grocery">Grocery</option>
+                <option value="bills">Bills</option>
+                <option value="food">Food</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="others">Others</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500 text-xs">
+                ▼
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Input -->
+          <div>
+            <label for="description"
+              class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Description / Note <span
+                class="text-slate-400 text-[10px]">(Optional)</span></label>
+            <textarea id="description" name="description" rows="3"
+              class="block w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition-all text-sm resize-none"
+              placeholder="Weekly groceries..."></textarea>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+            <button type="submit"
+              class="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-md shadow-emerald-700/10 hover:shadow-emerald-600/20 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              Submit Expense
+            </button>
+            <button type="reset"
+              class="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-600 font-medium py-3 px-6 rounded-xl transition-all border border-slate-200 focus:outline-none">
+              Clear Form
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right Column: Sidebar Stats & Activity -->
+      <div class="space-y-6">
+        <!-- Monthly Summary Widget -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-full blur-2xl -mr-8 -mt-8"></div>
+          <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Total Spent This Month</h3>
+          <div class="flex items-baseline gap-2">
+            <span class="text-3xl font-black text-slate-900 tracking-tight">₹45,240.00</span>
+            <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">↓ 4% vs last
+              mo</span>
+          </div>
+        </div>
+
+        <!-- Recent Transactions Card -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 tracking-wide">Recent Transactions
+          </h3>
+          <div class="space-y-3">
+            <!-- Row 1 -->
+            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center font-semibold text-orange-600 text-xs tracking-wider uppercase">
+                  TRV</div>
+                <div>
+                  <p class="text-sm font-bold text-slate-800">Travel</p>
+                  <p class="text-xs text-slate-400 font-mono">Feb 02, 2026</p>
+                </div>
+              </div>
+              <span class="text-sm font-mono font-bold text-slate-900">-₹4,000.00</span>
+            </div>
+            <!-- Row 2 -->
+            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center font-semibold text-orange-600 text-xs tracking-wider uppercase">
+                  SHP</div>
+                <div>
+                  <p class="text-sm font-bold text-slate-800">Shopping</p>
+                  <p class="text-xs text-slate-400 font-mono">Feb 02, 2026</p>
+                </div>
+              </div>
+              <span class="text-sm font-mono font-bold text-slate-900">-₹800.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</body>
+
+</html>
