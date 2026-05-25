@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Request, Form,Depends
+from fastapi import APIRouter, Request, Form, Depends
 from fastapi.templating import Jinja2Templates
-from app.analytics.category_analysis import df
+from app.analytics.category_analysis import build_expense_df
 
-router=APIRouter()
+router = APIRouter()
 
 @router.get("/analytics")
 def analysis():
-    return df.to_json(orient="records")
+    return build_expense_df().to_json(orient="records")

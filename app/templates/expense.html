@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spenda - Track Your Daily Expenses</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar styling to match the dark slate theme */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+    </style>
 </head>
 
 <body
@@ -88,45 +105,38 @@
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
 
                 <div
-                    class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[45vh]">
+                    class="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[55vh]">
                     <div>
                         <div class="mb-4 pb-3 border-b border-slate-100 flex items-center justify-between">
-                            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Transactions This
-                                Month</h2>
+                            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Transactions This Month</h2>
                             <span class="text-[11px] font-mono font-medium text-slate-500">Live DB Stream</span>
                         </div>
 
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm">
-                                <thead>
-                                    <tr
-                                        class="text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                                        <th class="pb-3 font-semibold">Category</th>
-                                        <!-- <th class="pb-3 font-semibold">Description</th> -->
-                                        <th class="pb-3 font-semibold">Date</th>
-                                        <th class="pb-3 font-semibold text-right">Amount</th>
+                        <div class="overflow-y-auto max-h-[38vh] pr-1 custom-scrollbar">
+                            <table class="w-full text-left text-sm relative">
+                                <thead class="bg-white sticky top-0 z-10">
+                                    <tr class="text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+                                        <th class="pb-3 font-semibold bg-white">Category</th>
+                                        <th class="pb-3 font-semibold bg-white">Date</th>
+                                        <th class="pb-3 font-semibold text-right bg-white">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-50 font-medium">
                                     {% if expense %}
                                     {% for exp in expense %}
-                                    <tr>
+                                    <tr class="hover:bg-slate-50/50 transition-colors">
                                         <td class="py-3.5">
                                             <span class="px-2.5 py-1 text-xs rounded-lg font-bold uppercase tracking-wide
-                          {% if exp.category.lower() == 'shopping' %} bg-orange-50 text-orange-600
-                          {% elif exp.category.lower() == 'travel' %} bg-sky-50 text-sky-600
-                          {% elif exp.category.lower() == 'grocery' %} bg-emerald-50 text-emerald-600
-                          {% elif exp.category.lower() == 'bills' %} bg-blue-50 text-blue-600
-                          {% elif exp.category.lower() == 'food' %} bg-rose-50 text-rose-600
-                          {% elif exp.category.lower() == 'entertainment' %} bg-violet-50 text-violet-600
-                          {% elif exp.category.lower() == 'others' or exp.category.lower() == 'other' %} bg-slate-100 text-slate-700
-                          {% else %} bg-slate-100 text-slate-700 {% endif %}">
+                                              {% if exp.category.lower() == 'shopping' %} bg-orange-50 text-orange-600
+                                              {% elif exp.category.lower() == 'travel' %} bg-sky-50 text-sky-600
+                                              {% elif exp.category.lower() == 'grocery' %} bg-emerald-50 text-emerald-600
+                                              {% elif exp.category.lower() == 'bills' %} bg-blue-50 text-blue-600
+                                              {% elif exp.category.lower() == 'food' %} bg-rose-50 text-rose-600
+                                              {% elif exp.category.lower() == 'entertainment' %} bg-violet-50 text-violet-600
+                                              {% else %} bg-slate-100 text-slate-700 {% endif %}">
                                                 {{ exp.category }}
                                             </span>
                                         </td>
-                                        <!-- <td class="py-3.5 text-slate-600 text-xs truncate max-w-[180px]">
-                        {{ exp.description if exp.description else "No specific memo note" }}
-                      </td> -->
                                         <td class="py-3.5 text-slate-500 text-xs font-medium">
                                             {{ exp.date }}
                                         </td>
@@ -137,7 +147,7 @@
                                     {% endfor %}
                                     {% else %}
                                     <tr>
-                                        <td colspan="4" class="py-8 text-center text-xs font-medium text-slate-400">
+                                        <td colspan="3" class="py-8 text-center text-xs font-medium text-slate-400">
                                             No transactions recorded for this billing period cycle.
                                         </td>
                                     </tr>
@@ -147,8 +157,7 @@
                         </div>
                     </div>
 
-                    <div
-                        class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-medium text-slate-400">
+                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-medium text-slate-400">
                         <span>Total rows: {{ expense|length }} entries</span>
                     </div>
                 </div>
@@ -157,32 +166,28 @@
                     class="lg:col-span-3 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[55vh]">
                     <div>
                         <div class="mb-4 pb-3 border-b border-slate-100">
-                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Analytics & Trends
-                            </h3>
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Analytics & Trends</h3>
                         </div>
 
-                        <div
-                            class="border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 p-4 min-h-[48vh] flex flex-col items-center justify-center text-center group hover:border-orange-400/50 transition-all cursor-pointer">
-                            <div
-                                class="w-full p-3 bg-white rounded-xl shadow-sm border border-slate-100 mb-3 overflow-hidden h-full">
-
+                        <div class="border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 p-4 min-h-[44vh] flex flex-col items-center justify-center text-center group hover:border-orange-400/50 transition-all cursor-pointer">
+                            <div class="w-full p-3 bg-white rounded-xl shadow-sm border border-slate-100 mb-3 overflow-hidden h-full">
                                 {% if chart %}
                                 <img src="data:image/png;base64,{{ chart }}" alt="Analytics chart"
-                                    class="rounded-lg w-full h-[44vh] object-contain" />
+                                    class="rounded-lg w-full h-[40vh] object-contain" />
                                 {% else %}
-                                <!-- fallback UI -->
-                                <div class="text-slate-400 text-sm">
+                                <div class="text-slate-400 text-sm py-20">
                                     No chart available
                                 </div>
                                 {% endif %}
-
                             </div>
-                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                                <span class="text-slate-400 font-medium">Status: Awaiting rendering engine</span>
+                            <div class="w-full pt-2 flex items-center justify-between text-xs">
+                                <span class="text-slate-400 font-medium">Status: Live Engine Rendered</span>
                             </div>
                         </div>
-
                     </div>
+                </div>
+
+            </div>
         </main>
     </div>
 

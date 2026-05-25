@@ -10,5 +10,6 @@ class ExpenseForm(BaseModel):
         "grocery",
         "bills",
         "food",
-        "entertainment"
+        "entertainment",
+        "others"
     ] = "others"

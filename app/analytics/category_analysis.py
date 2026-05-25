@@ -28,17 +28,19 @@ def build_expense_df():
         db.close()
 
 
-df = build_expense_df()
-
 def get_plot():
-    data=df.groupby("category")["amount"].sum().reset_index()
-    sns.barplot(x="category",y="amount",data=data,palette="viridis")
+    df = build_expense_df()
+    if df.empty:
+        return ""
+
+    data = df.groupby("category")["amount"].sum().reset_index()
+    sns.barplot(x="category", y="amount", data=data, palette="viridis")
     plt.title('Total Amount by Category')
     plt.xlabel('Category')
     plt.ylabel('Total Amount')
-    buffer=io.BytesIO()
-    plt.savefig(buffer,format="png",bbox_inches="tight")
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format="png", bbox_inches="tight")
     buffer.seek(0)
-    image=base64.b64encode(buffer.getvalue()).decode()
+    image = base64.b64encode(buffer.getvalue()).decode()
     plt.close()
     return image
