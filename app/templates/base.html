@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Spenda - Track Your Daily Expenses{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar styling to match the dark slate theme */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 20px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col p-4 md:p-6 selection:bg-orange-500 selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/60 shadow-sm rounded-t-2xl">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-orange-500 p-2 rounded-lg text-white font-bold text-xl tracking-tight">S</div>
+                <span class="text-lg font-black text-white tracking-tight">Spenda</span>
+            </div>
+            
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-200">
+                <a href="/expense" class="hover:text-orange-500 transition-colors">Dashboard</a>
+                <a href="/expense/add_amount" class="hover:text-orange-500 transition-colors">Add Expense</a>
+                <a href="/expense/history" class="hover:text-orange-500 transition-colors">History</a>
+            </nav>
+
+            <a href="/profile" title="Go to profile"
+                class="flex items-center gap-3 px-3 py-1.5 rounded-xl hover:bg-slate-800 transition group">
+                <span class="hidden sm:block text-xs font-bold text-slate-300 group-hover:text-white transition">
+                    Alex Williamson
+                </span>
+                <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-orange-500 text-white shadow-sm font-black text-xs tracking-wider border border-orange-400/30">
+                    AW
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="w-full flex-grow bg-slate-900 rounded-b-2xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-5">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="w-full text-center py-4 mt-6 text-xs text-slate-400 font-medium">
+        &copy; 2026 Spenda Engine. Built for clean expense modular tracking.
+    </footer>
+
+    {% if success %}
+    <div id="toast"
+        class="fixed top-6 right-6 bg-emerald-600 text-white px-4 py-3 rounded-lg shadow-lg z-50 font-medium text-sm transition-all duration-300">
+        Data entered successfully
+    </div>
+    <script>
+        setTimeout(function () {
+            var t = document.getElementById('toast');
+            if (t) {
+                t.style.transition = 'opacity 0.4s';
+                t.style.opacity = '0';
+                setTimeout(function () { t.remove(); }, 400);
+            }
+        }, 2500);
+    </script>
+    {% endif %}
+
+</body>
+</html>
